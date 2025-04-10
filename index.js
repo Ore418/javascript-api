@@ -55,7 +55,20 @@ app.post("/execute", checkToken, async (req, res) => {
         // Create a function with puppeteer, browser, page, and console in its scope
         const asyncFunction = new Function('puppeteer', 'browser', 'page', 'console', `
             return (async () => {
+                let __result;
                 ${code}
+                
+                // Try to extract function name from the last line
+                const lines = ${JSON.stringify(code)}.trim().split('\\n');
+                const lastLine = lines[lines.length - 1];
+                const funcMatch = lastLine.match(/^(\\w+)\\(\\);?\\s*$/);
+                
+                if (funcMatch) {
+                    // If last line is a function call, return its result
+                    __result = eval(funcMatch[1])();
+                }
+                
+                return __result;
             })();
         `);
 
