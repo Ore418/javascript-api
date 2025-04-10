@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const puppeteer = require('puppeteer');
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const port = process.env.PORT || 10000;
 
 // Secure token from environment variable
 const SECURE_TOKEN = process.env.SECURE_TOKEN;
@@ -87,6 +87,6 @@ app.post("/execute", checkToken, async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Server is running on port ${port}`);
 });
